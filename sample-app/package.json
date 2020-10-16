@@ -1,0 +1,19 @@
+{
+    "name": "delete-test-01",
+    "description": "delete-test-01-description",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "aws-sdk": "^2.437.0"
+    },
+    "devDependencies": {
+        "eslint": "^7.11.0",
+        "eslint-config-airbnb-base": "^14.2.0",
+        "eslint-plugin-import": "^2.22.1",
+        "jest": "^24.7.1"
+    },
+    "scripts": {
+        "test": "jest",
+        "lint": "eslint ./src --fix"
+    }
+}

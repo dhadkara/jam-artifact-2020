@@ -1,0 +1,22 @@
+{
+  "name": "verify-jam",
+  "version": "1.0.0",
+  "description": "This serverless app sets up an AWS CodePipeline pipeline as a Continuous Deployment (CD) solution for a SAM project hosted on GitHub or AWS CodeCommit. Once setup, every time you push to the specified Git repository branch, the change will flow through the AWS CodePipeline pipeline.",
+  "main": "verify-lambda.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dhadkara/aws-sam-codepipeline-cd.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dhadkara/aws-sam-codepipeline-cd/issues"
+  },
+  "homepage": "https://github.com/dhadkara/aws-sam-codepipeline-cd#readme",
+  "dependencies": {
+    "aws-sdk": "^2.772.0"
+  }
+}
