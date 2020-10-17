@@ -11,23 +11,6 @@ Outputs:
     Value: !Ref Pipeline
   PipelineVersion:
     Value: !GetAtt Pipeline.Version
-
-Parameters:
-  ComputeType:
-    AllowedValues:
-      - BUILD_GENERAL1_SMALL
-      - BUILD_GENERAL1_MEDIUM
-      - BUILD_GENERAL1_LARGE
-    Default: BUILD_GENERAL1_SMALL
-    Description: AWS CodeBuild project compute type.
-    Type: String
-  EnvironmentType:
-    AllowedValues:
-      - LINUX_CONTAINER
-      - WINDOWS_CONTAINER
-    Default: LINUX_CONTAINER
-    Description: Environment type used by AWS CodeBuild. See the documentation for details (https://docs.aws.amazon.com/codebuild/latest/userguide/create-project.html#create-project-cli).
-    Type: String
  
 Resources:
   CodeCommitRepo:
@@ -38,7 +21,7 @@ Resources:
       Code:
         BranchName: master
         S3:
-          Bucket: "jam-ci-source-code-bucket"
+          Bucket: "jam-ci-source-bucket"
           Key: "Archive.zip"
   Artifacts:
     Properties:
@@ -155,7 +138,7 @@ Resources:
                   - "codebuild:BatchGetBuilds"
                 Resource:
                   - !GetAtt BuildProject.Arn
-                  - !GetAtt AnalyzeProject.Arn
+                  - !GetAtt LintProject.Arn
                   - !GetAtt TestProject.Arn
         - PolicyName: codecommit-access
           PolicyDocument:
@@ -183,26 +166,26 @@ Resources:
       Artifacts:
         Type: CODEPIPELINE
       Environment:
-        ComputeType: !Ref ComputeType
+        ComputeType: 'BUILD_GENERAL1_SMALL'
         Image: 'aws/codebuild/standard:2.0'
-        Type: !Ref EnvironmentType
+        Type: 'LINUX_CONTAINER'
         EnvironmentVariables:
           - Name: PACKAGE_BUCKET
             Value: !Ref Artifacts
   
-  AnalyzeProject:
+  LintProject:
     Type: AWS::CodeBuild::Project
     Properties:
-      ServiceRole: !GetAtt AnalyzeProjectRole.Arn
+      ServiceRole: !GetAtt LintProjectRole.Arn
       Source:
         Type: CODEPIPELINE
         BuildSpec: buildspec-lint-test.yml
       Artifacts:
         Type: CODEPIPELINE
       Environment:
-        ComputeType: !Ref ComputeType
+        ComputeType: 'BUILD_GENERAL1_SMALL'
         Image: 'aws/codebuild/standard:2.0'
-        Type: !Ref EnvironmentType
+        Type: 'LINUX_CONTAINER'
         EnvironmentVariables:
           - Name: PACKAGE_BUCKET
             Value: !Ref Artifacts
@@ -217,9 +200,9 @@ Resources:
       Artifacts:
         Type: CODEPIPELINE
       Environment:
-        ComputeType: !Ref ComputeType
+        ComputeType: 'BUILD_GENERAL1_SMALL'
         Image: 'aws/codebuild/standard:2.0'
-        Type: !Ref EnvironmentType
+        Type: 'LINUX_CONTAINER'
         EnvironmentVariables:
           - Name: PACKAGE_BUCKET
             Value: !Ref Artifacts
@@ -230,7 +213,7 @@ Resources:
       PolicyName: !Sub codebuild-access-${AWS::StackName}
       Roles:
         - !Ref TestProjectRole
-        - !Ref AnalyzeProjectRole
+        - !Ref LintProjectRole
         - !Ref BuildProjectRole
       PolicyDocument:
         Version: '2012-10-17'
@@ -269,7 +252,7 @@ Resources:
         Version: '2012-10-17'
       Path: /service-role/
   
-  AnalyzeProjectRole:
+  LintProjectRole:
     Type: AWS::IAM::Role
     Properties:
       Description: !Sub "Used in Unit Test project. Created by CloudFormation ${AWS::StackId}"

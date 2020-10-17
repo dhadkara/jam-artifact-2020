@@ -1,0 +1,20 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "codepipeline:*",
+        "codebuild:**",
+        "codecommit:*",
+        "s3:CreateBucket",
+        "s3:PutObject",
+        "s3:ListBucket",
+        "s3:*",
+        "logs:Describe*",
+        "logs:Get*"
+      ],
+      "Resource": "*",
+      "Effect": "Allow"
+    }
+  ]
+}
