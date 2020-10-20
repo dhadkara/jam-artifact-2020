@@ -1,3 +1,3 @@
 #!/bin/bash
 
-zip -r Archive.zip ./ --exclude \*.git\* \*node_modules\*
+zip -r dhadkar1-src.zip ./ --exclude \*.git\* \*node_modules\*

@@ -116,6 +116,6 @@ dist
 .pnp.*
 
 #Custom Ignores
-Archive.zip
+dhadkar1-src.zip
 *.DS_Store
 .DS_Store

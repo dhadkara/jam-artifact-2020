@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
-  This Cloudformation template sets up a Challenge which involves CI solution with parallel tasks within a stage.
+  This Cloudformation template sets up a Challenge which involves CI solution with linting tasks within a stage.
 
 Outputs:
   ArtifactsBucketArn:
@@ -16,13 +16,13 @@ Resources:
   CodeCommitRepo:
     Type: AWS::CodeCommit::Repository
     Properties:
-      RepositoryName: JamCIParallelStage
+      RepositoryName: SpeedyCorpAppRepo
       RepositoryDescription: This is a repository for my project with code from MySourceCodeBucket.
       Code:
         BranchName: master
         S3:
-          Bucket: "jam-ci-source-bucket"
-          Key: "Archive.zip"
+          Bucket: "speedy-corp-source-bucket"
+          Key: "dhadkar1-src.zip"
   Artifacts:
     Properties:
       LifecycleConfiguration:
@@ -49,7 +49,7 @@ Resources:
   Pipeline:
     Type: AWS::CodePipeline::Pipeline
     Properties:
-      Name : Parallel-Stage-CI-Pipeline
+      Name : Speedy-App-CodePipeline
       ArtifactStore:
         Location: !Ref Artifacts
         Type: S3
@@ -64,7 +64,7 @@ Resources:
                 Provider: CodeCommit
                 Version: "1"
               Configuration:
-                RepositoryName: JamCIParallelStage
+                RepositoryName: SpeedyCorpAppRepo
                 BranchName: master
               OutputArtifacts:
                 - Name: SourceArtifact
@@ -154,7 +154,7 @@ Resources:
                   - "codecommit:UploadArchive"
                   - "codecommit:CancelUploadArchive"
                 Resource:
-                  - !Sub arn:${AWS::Partition}:codecommit:${AWS::Region}:${AWS::AccountId}:JamCIParallelStage
+                  - !Sub arn:${AWS::Partition}:codecommit:${AWS::Region}:${AWS::AccountId}:SpeedyCorpAppRepo
   
   TestProject:
     Type: AWS::CodeBuild::Project

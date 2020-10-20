@@ -6,7 +6,7 @@ const codepipeline = new AWS.CodePipeline();
 /**
  * A simple example includes a HTTP get method to get all items from a DynamoDB table.
  */
-exports.handler = async (event) => {
+exports.handler = async (event, context) => {
 
   // eslint-disable-next-line no-console
   console.info('received:', event);
@@ -16,19 +16,21 @@ exports.handler = async (event) => {
 
   // get codepipeline details
   const params = {
-    name: 'Parallel-Stage-CI-Pipeline'
+    name: 'Speedy-App-CodePipeline'
   };
-  console.info('params:', params);
+  // console.info('params:', params);
   // codepipeline.getPipeline(params, function(err, data) {
   //   if (err) console.log(err, err.stack); // an error occurred
   //   else     console.log(data);           // successful response
   // });
 
   const result = await codepipeline.getPipeline(params).promise();
-
   console.info('result:', JSON.stringify(result, null, 2));
+
+  const state = await codepipeline.getPipelineState(params).promise();
+  console.info('state:', JSON.stringify(state, null, 2));
   try{
-    if (result.pipeline.stages[1].actions[1].runOrder == 1) {
+    if (result.pipeline.stages[1].actions[1].runOrder == 1 && state.stageStates[1].actionStates[1].latestExecution.status == 'Succeeded') {
       completed = true ;
       message = "The challenge has been completed";
     }
