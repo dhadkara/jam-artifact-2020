@@ -21,7 +21,7 @@ Resources:
       Code:
         BranchName: master
         S3:
-          Bucket: "aws-jam-challenge-resources"
+          Bucket: "speedy-corp-source-bucket"
           Key: "codepipeline-lint-stage/dhadkar1-src.zip"
   Artifacts:
     Properties:
