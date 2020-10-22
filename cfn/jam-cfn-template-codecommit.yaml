@@ -21,8 +21,8 @@ Resources:
       Code:
         BranchName: master
         S3:
-          Bucket: "aws-jam-challenge-resources"
-          Key: "codepipeline-lint-stage/dhadkar1-src.zip"
+          Bucket: !Sub 'aws-jam-challenge-resources-${AWS::Region}'
+          Key: !Sub 'codepipeline-lint-stage/dhadkar1-src.zip'
   Artifacts:
     Properties:
       LifecycleConfiguration:

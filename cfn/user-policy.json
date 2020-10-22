@@ -10,8 +10,20 @@
         "s3:PutObject",
         "s3:ListBucket",
         "s3:*",
+        "events:*",
         "logs:Describe*",
-        "logs:Get*"
+        "logs:Get*",
+        "iam:AttachRolePolicy",
+        "iam:CreateRole",
+        "iam:PutRolePolicy",
+        "iam:CreatePolicy",
+        "iam:CreatePolicyVersion",
+        "iam:DeletePolicyVersion",
+        "iam:DeletePolicy",
+        "iam:DeleteRole",
+        "iam:DeleteRolePolicy",
+        "iam:PassRole",
+        "cloudformation:*"
       ],
       "Resource": "*",
       "Effect": "Allow"
